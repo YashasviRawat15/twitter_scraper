@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Trending Topics</title>
+</head>
+<body>
+    <h1>Twitter Trending Topics</h1>
+    <button onclick="fetchTrends()">Click here to run the script</button>
+    <div id="results"></div>
+
+    <script>
+        function fetchTrends() {
+            fetch('/run-script')
+                .then(response => response.json())
+                .then(data => {
+                    let resultDiv = document.getElementById('results');
+                    resultDiv.innerHTML = `<h2>These are the most happening topics as on ${data.timestamp}</h2>`;
+                    resultDiv.innerHTML += `<ul>`;
+                    resultDiv.innerHTML += `<li>${data.trend1}</li>`;
+                    resultDiv.innerHTML += `<li>${data.trend2}</li>`;
+                    resultDiv.innerHTML += `<li>${data.trend3}</li>`;
+                    resultDiv.innerHTML += `<li>${data.trend4}</li>`;
+                    resultDiv.innerHTML += `<li>${data.trend5}</li>`;
+                    resultDiv.innerHTML += `</ul>`;
+                    resultDiv.innerHTML += `<p>The IP address used for this query was ${data.ipAddress}.</p>`;
+                    resultDiv.innerHTML += `<p>Here’s a JSON extract of this record from the MongoDB:</p>`;
+                    resultDiv.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                })
+                .catch(error => {
+                    let resultDiv = document.getElementById('results');
+                    resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+                });
+        }
+    </script>
+</body>
+</html>
